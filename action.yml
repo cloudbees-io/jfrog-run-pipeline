@@ -1,0 +1,46 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: jfrog pipeline actions
+inputs:
+  url:  # id of input
+    description: 'jfrog action url'
+    required: true
+  token:  # id of input
+    description: 'jfrog token'
+    required: true
+  pipeline-name:  # id of input
+    description: 'pipeline name'
+    required: true
+  project-name:  # id of input
+    description: 'project name'
+    required: false
+    default: '' 
+  branch-name:  # id of input
+    description: 'branch name'
+    required: false
+    default: ''     
+  environment-variables:  # id of input
+    description: 'environement variables as json'
+    required: false
+    default: '{}'   
+    
+runs:
+  using: composite
+  steps:
+    - id: invoke-jfrog-pipeline-job
+      name: invoke-jfrog-pipeline-job
+      uses: docker://registry.saas-dev.beescloud.com/staging/jfrog-pipeline-actions:main-fc5a0fb1f8c4fafed4bcbe3ac8745ada6a722734
+      shell: sh
+      env:
+        CONFIG_JSON: '{"metaInfo":{"url":"${{ inputs.url }}","toolType":"JFROG_PIPELINE","token":"${{ inputs.token }}","pipelineName":"${{ inputs.pipeline-name }}","projectName":"${{ inputs.project-name }}","branchName":"${{ inputs.branch-name }}","environmentVariables":${{ inputs.environment-variables }}}}'
+        RUN_ID: ${{ cloudbees.run_id }}
+        JOB_ID: ${{ job.id }}
+        STEP_ID: ${{ step.internal.id }}
+        DNS_URL: ${{ cloudbees.api.url }}
+        JWT_TOKEN: ${{ cloudbees.api.token }}
+      run: |
+        set -x
+        cd /app
+        ./jfrog_pipeline_actions_app invoke -i $CONFIG_JSON
+        
+        

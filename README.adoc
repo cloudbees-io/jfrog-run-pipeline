@@ -1,0 +1,77 @@
+= CloudBees action: Run a JFrog pipeline
+
+JFrog Pipelines is an automation service for building, testing, and deploying software as part of a system of continuous integration and continuous delivery (CI/CD).
+
+== Inputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required?
+| Description
+
+| `url`
+| String
+| Yes
+| The JFrog Pipelines server URL.
+
+| `token`
+| String
+| Yes
+| The JFrog Pipelines token.
+
+| `pipeline-name`
+| String
+| Yes
+| The JFrog Pipelines pipeline name.
+
+| `project-name`
+| String
+| No
+| The JFrog Pipelines project name.
+
+| `branch-name`
+| String
+| No
+| The JFrog Pipelines branch name.
+
+| `environment-variables`
+| JSON
+| No
+| JFrog environment variables, formatted as JSON data in key/value pairs.
+
+|===
+
+== Usage example
+
+In your YAML file, add:
+
+[source,yaml]
+----
+
+jobs:
+  run-jfrog-pipelines-job:
+    steps:
+      - name: Run Jfrog Pipelines job
+        uses: cloudbees-io/jfrog-run-pipeline@v1
+        with:
+          url: ${{ vars.JFROG_PIPELINES_URL }}
+          token: ${{secrets.JFROG_PIPELINES_TOKEN}}
+          pipeline-name: my_pipeline_job
+          branch-name: test
+          project-name : default
+          environment-variables : '{"test":"test","test1":"test1"}'
+----
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
