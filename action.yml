@@ -29,7 +29,7 @@ runs:
   steps:
     - id: invoke-jfrog-pipeline-job
       name: invoke-jfrog-pipeline-job
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-pipeline-actions:main-337f5a141eef9813def340becc0e7ae5726fd6bb
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/jfrog-pipeline-actions:main-4a894447e190649dd1c8db4471f9f827c66706ce
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"url":"${{ inputs.url }}","toolType":"JFROG_PIPELINE","token":"${{ inputs.token }}","pipelineName":"${{ inputs.pipeline-name }}","projectName":"${{ inputs.project-name }}","branchName":"${{ inputs.branch-name }}","environmentVariables":${{ inputs.environment-variables }}}}'
